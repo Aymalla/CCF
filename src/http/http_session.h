@@ -3,12 +3,12 @@
 #pragma once
 
 #include "ccf/ds/logger.h"
+#include "ccf/http_responder.h"
 #include "enclave/client_session.h"
 #include "enclave/rpc_handler.h"
 #include "enclave/rpc_map.h"
 #include "error_reporter.h"
 #include "http_parser.h"
-#include "http_responder.h"
 #include "http_rpc_context.h"
 
 namespace http
@@ -274,7 +274,7 @@ namespace http
       }
     }
 
-    void send_response(
+    bool send_response(
       http_status status_code,
       http::HeaderMap&& headers,
       http::HeaderMap&& trailers,
@@ -294,6 +294,7 @@ namespace http
 
       auto data = response.build_response();
       tls_io->send_raw(data.data(), data.size());
+      return true;
     }
   };
 
